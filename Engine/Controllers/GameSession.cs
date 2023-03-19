@@ -10,11 +10,15 @@ namespace Engine.Controllers
     public class GameSession
     {
         public Player CurrentPlayer { get; set; }
+        public Location CurrentLocation { get; set; }
 
         public GameSession()
         {
             CurrentPlayer = new Player();
             InitialiseNewSession(CurrentPlayer);
+
+            CurrentLocation = new Location();
+            InitialiseNewLocation(CurrentLocation);
         }
 
         public GameSession(Player player)
@@ -29,6 +33,15 @@ namespace Engine.Controllers
             player.Level = 1;
             player.HitPoints = 100;
             player.ExperiencePoints = 0;
+        }
+
+        private void InitialiseNewLocation(Location location)
+        {
+            location.Name = "Home";
+            location.Description = "This is your home, where you can rest";
+            location.XCoordinate = 0;
+            location.YCoordinate = -1;
+            location.ImageName = "/Engine;component/Images/Locations/house.png";
         }
     }
 }
