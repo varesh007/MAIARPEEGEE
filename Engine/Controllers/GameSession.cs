@@ -1,4 +1,5 @@
 ﻿using Engine.Models;
+using Engine.Factories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace Engine.Controllers
 {
     public class GameSession
     {
+        public World CurrentWorld { get; set; }
         public Player CurrentPlayer { get; set; }
         public Location CurrentLocation { get; set; }
 
@@ -17,16 +19,19 @@ namespace Engine.Controllers
             CurrentPlayer = new Player();
             InitialiseNewSession(CurrentPlayer);
 
-            CurrentLocation = new Location();
-            InitialiseNewLocation(CurrentLocation);
+            World CurrentWorld = InitialiseNewWorld();
+
+            InitialiseNewLocation(CurrentWorld);
         }
 
-        public GameSession(Player player)
+        private World InitialiseNewWorld()
         {
-            CurrentPlayer = player;
+            WorldFactory factory = new WorldFactory();
+            return factory.CreateWorld();
         }
 
-        private void InitialiseNewSession(Player player) {
+        private void InitialiseNewSession(Player player)
+        {
             player.Name = "Varesh";
             player.CharacterClass = "Figher";
             player.Gold = 0;
@@ -35,13 +40,9 @@ namespace Engine.Controllers
             player.ExperiencePoints = 0;
         }
 
-        private void InitialiseNewLocation(Location location)
+        private void InitialiseNewLocation(World currentLocation)
         {
-            location.Name = "Home";
-            location.Description = "This is your home, where you can rest";
-            location.XCoordinate = 0;
-            location.YCoordinate = -1;
-            location.ImageName = "/Engine;component/Images/Locations/house.png";
+            CurrentLocation = currentLocation.LocationAt(0, -1);
         }
     }
 }
